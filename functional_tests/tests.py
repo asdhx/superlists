@@ -51,7 +51,6 @@ class NewVisitorTest(LiveServerTestCase):
         # When she hits enter, the page updates, and now the page list/
         #"1: Buy peacock featers" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
-        # time.sleep(1)
         self.wait_for_row_in_list_table('1: Buy peacock feathers')
 
         #There is still a text box inviting her to add another item.
@@ -59,10 +58,6 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Use peacock feathers to make a fly')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
-
-        self.wait_for_row_in_list_table('1: Buy peacock feathers')
-        self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
 
 
         self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
@@ -82,11 +77,12 @@ class NewVisitorTest(LiveServerTestCase):
 
         #we use a new brother session for francis
         self.browser.quit()
+
         self.browser = webdriver.Firefox()
 
         #Francis visits the home page. There is no sign of Edith's list
         self.browser.get(self.live_server_url)
-        page_text = self.browser.find_element_by_tag_name('body').row_text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make a fly', page_text)
 
@@ -107,7 +103,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('Buy peackock feathers', page_text)
         self.assertIn('Buy milk',page_text)
 
-        #satisfied they both go back to sleep with each other.
+        # satisfied they both go back to sleep with each other.
 
 #
 # if __name__ == '__main__':
